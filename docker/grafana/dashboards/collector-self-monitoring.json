@@ -143,7 +143,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT (1 - AVG(value)) * 100 as cpu_percent FROM otel.otel_metrics_gauge WHERE metric_name = 'system.cpu.utilization' AND JSON_EXTRACT(attributes, '$.state') = '\"idle\"' AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 MINUTE)",
+          "rawSql": "SELECT (1 - AVG(value)) * 100 as cpu_percent FROM otel.otel_metrics_gauge WHERE metric_name = 'system.cpu.utilization' AND attributes['state'] = 'idle' AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 MINUTE)",
           "refId": "A"
         }
       ],
@@ -211,7 +211,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT AVG(value) * 100 as memory_percent FROM otel.otel_metrics_gauge WHERE metric_name = 'system.memory.utilization' AND JSON_EXTRACT(attributes, '$.state') = '\"used\"' AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 MINUTE)",
+          "rawSql": "SELECT AVG(value) * 100 as memory_percent FROM otel.otel_metrics_gauge WHERE metric_name = 'system.memory.utilization' AND attributes['state'] = 'used' AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 MINUTE)",
           "refId": "A"
         }
       ],
@@ -505,7 +505,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT \n  UNIX_TIMESTAMP(DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:00')) as time_sec,\n  'CPU' as metric,\n  (1 - AVG(value)) * 100 as value\nFROM otel.otel_metrics_gauge \nWHERE metric_name = 'system.cpu.utilization'\n  AND JSON_EXTRACT(attributes, '$.state') = '\"idle\"'\n  AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 HOUR)\nGROUP BY time_sec\nORDER BY time_sec",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:00')) as time_sec,\n  'CPU' as metric,\n  (1 - AVG(value)) * 100 as value\nFROM otel.otel_metrics_gauge \nWHERE metric_name = 'system.cpu.utilization'\n  AND attributes['state'] = 'idle'\n  AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 HOUR)\nGROUP BY time_sec\nORDER BY time_sec",
           "refId": "CPU"
         },
         {
@@ -516,7 +516,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT \n  UNIX_TIMESTAMP(DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:00')) as time_sec,\n  'Memory' as metric,\n  AVG(value) * 100 as value\nFROM otel.otel_metrics_gauge \nWHERE metric_name = 'system.memory.utilization'\n  AND JSON_EXTRACT(attributes, '$.state') = '\"used\"'\n  AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 HOUR)\nGROUP BY time_sec\nORDER BY time_sec",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:00')) as time_sec,\n  'Memory' as metric,\n  AVG(value) * 100 as value\nFROM otel.otel_metrics_gauge \nWHERE metric_name = 'system.memory.utilization'\n  AND attributes['state'] = 'used'\n  AND timestamp >= DATE_SUB(NOW(), INTERVAL 1 HOUR)\nGROUP BY time_sec\nORDER BY time_sec",
           "refId": "Memory"
         }
       ],
